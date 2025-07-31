@@ -1,0 +1,11 @@
+const layout = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <div className="dark:bg-zinc-900 dark:text-zinc-50 w-full min-h-svh md:py-[3vh] py-10 flex items-start justify-center">
+            <div className="lg:w-[55rem] w-full lg:px-0 px-6 h-full flex flex-col gap-4">
+                {children}
+            </div>
+        </div>
+    )
+}
+
+export default layout
