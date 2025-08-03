@@ -14,8 +14,9 @@ export async function POST(req: Request) {
             password == process.env.ADMIN_PASSWORD
         ) {
             return successResponse("Successfully logged in")
+        } else {
+            return errorResponse("Invalid credentials")
         }
-        return errorResponse("Invalid credentials")
     } catch (error) {
         return handleError(error)
     }

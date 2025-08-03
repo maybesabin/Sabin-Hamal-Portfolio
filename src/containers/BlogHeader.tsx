@@ -1,9 +1,18 @@
+"use client"
+
 import { IconArrowNarrowLeft } from "@tabler/icons-react"
 import Link from "next/link"
+import { motion } from "framer-motion"
+import { fadeUp } from "@/utils/animation"
 
 const BlogHeader = () => {
     return (
-        <div className="flex flex-col items-start gap-4">
+        <motion.div
+            initial={fadeUp.initial}
+            animate={fadeUp.animate}
+            transition={{ ...fadeUp.transition, delay: 0.5 }}
+            className="flex flex-col items-start gap-4"
+        >
             <div className="w-full flex items-center justify-between md:text-sm text-xs text-neutral-400">
                 <Link
                     className="flex items-center gap-1 hover:text-white transition-all"
@@ -12,7 +21,7 @@ const BlogHeader = () => {
                     <IconArrowNarrowLeft className="md:size-5 size-4" />
                     <span>back to portfolio</span>
                 </Link>
-                <h5>
+                <h5 className="text-xs">
                     {new Date().toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -28,7 +37,7 @@ const BlogHeader = () => {
             <p className="text-neutral-400 text-xs lg:w-1/2 w-full">
                 thoughts on development, technology, and building things that matter. sharing insights from my journey as a full stack developer.
             </p>
-        </div>
+        </motion.div>
     )
 }
 
