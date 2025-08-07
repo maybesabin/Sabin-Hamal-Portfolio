@@ -36,7 +36,7 @@ const LoginForm = () => {
         setIsLoading(true)
 
         try {
-            await axios.post("api/auth/login", formData)
+            await axios.post("/api/auth/login", formData)
             toast.success("Login successful!")
             setIsLoggedIn(true)
             router.push("/admin")
