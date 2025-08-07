@@ -19,7 +19,7 @@ const BlogsContainer = () => {
     }
 
     const fetchBlogs = async (): Promise<BlogType[]> => {
-        const res = await axios.get("http://localhost:3000/api/blogs")
+        const res = await axios.get("/api/blogs")
         return res.data.blogs
     }
 

@@ -99,23 +99,23 @@ const AdminPanel = () => {
     const queryClient = useQueryClient()
 
     const fetchBlogs = async () => {
-        const res = await axios.get("http://localhost:3000/api/blogs")
+        const res = await axios.get("/api/blogs")
         return res.data.blogs
     }
 
     const fetchBlog = async ({ queryKey }: { queryKey: [string, string] }) => {
         const [, slug] = queryKey
-        const res = await axios.get(`http://localhost:3000/api/blog/${slug}`)
+        const res = await axios.get(`/api/blog/${slug}`)
         return res.data.blog
     }
 
     const updateBlog = async (slug: string, data: Partial<BlogType>) => {
-        const res = await axios.put(`http://localhost:3000/api/blog/${slug}`, data)
+        const res = await axios.put(`/api/blog/${slug}`, data)
         return res.data
     }
 
     const createBlog = async (data: { title: string; category: string; content: string }) => {
-        const res = await axios.post("http://localhost:3000/api/blogs", data, {
+        const res = await axios.post("/api/blogs", data, {
             headers: {
                 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY}`
             }

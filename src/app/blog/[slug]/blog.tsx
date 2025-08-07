@@ -20,7 +20,7 @@ const Blog = () => {
 
     const fetchBlog = async () => {
         try {
-            const res = await axios.get(`http://localhost:3000/api/blog/${slug}`)
+            const res = await axios.get(`/api/blog/${slug}`)
             return res.data.blog
         } catch (error) {
             console.log(error)
