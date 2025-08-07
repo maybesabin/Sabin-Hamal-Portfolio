@@ -51,23 +51,26 @@ const Wakatime = () => {
             className="text-xs text-neutral-500 hover:text-neutral-400 cursor-pointer mt-2 transition-all">
 
             {
-                loading ?
-                    isClient &&
-                    //@ts-expect-error: Custom element 'l-infinity' is not recognized by TypeScript
-                    <l-infinity
-                        size="25"
-                        stroke="2"
-                        stroke-length="0.15"
-                        bg-opacity="0.1"
-                        speed="1.3"
-                        color="white"
-                    />
-                    :
-                    (totalTime == null || totalTime == `0 secs`) ?
-                        `i didn't code today` :
-                        `i coded ${totalTime} today`
+                loading ? (
+                    isClient && (
+                        //@ts-expect-error: Custom element 'l-infinity' is not recognized by TypeScript
+                        <l-infinity
+                            size="25"
+                            stroke="2"
+                            stroke-length="0.15"
+                            bg-opacity="0.1"
+                            speed="1.3"
+                            color="white"
+                        />
+                    )
+                ) : error ? (
+                    'failed to fetch data'
+                ) : (totalTime == null || totalTime === '0 secs') ? (
+                    `i didn't code today`
+                ) : (
+                    `i coded ${totalTime} today`
+                )
             }
-            {(!loading && error) && 'failed to fetch data'}
         </motion.a>
     )
 }
