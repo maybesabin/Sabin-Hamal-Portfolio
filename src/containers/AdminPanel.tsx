@@ -134,7 +134,6 @@ const AdminPanel = () => {
     })
 
     const {
-        data: blog,
         isLoading: blogLoading,
     } = useQuery({
         queryKey: ["blog", selectedSlug ?? ""],
