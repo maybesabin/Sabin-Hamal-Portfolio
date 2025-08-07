@@ -1,7 +1,12 @@
+import AdminHeader from "@/containers/AdminHeader"
+import AdminPanel from "@/containers/AdminPanel"
 
 const page = () => {
     return (
-        <div>page</div>
+        <div>
+            <AdminHeader />
+            <AdminPanel />
+        </div>
     )
 }
 

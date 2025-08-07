@@ -1,14 +1,13 @@
 "use client"
 
-import { IconArrowNarrowLeft } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Calendar, Clock } from "lucide-react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import ReactMarkdown from "react-markdown"
 import { motion } from "framer-motion"
 import { fadeUp } from "@/utils/animation";
+import BackButton from "@/components/back-button";
 
 const page = () => {
     const params = useParams();
@@ -53,13 +52,10 @@ const page = () => {
             className="flex flex-col items-start gap-4"
         >
             <div className="w-full flex items-center justify-between md:text-sm text-xs text-neutral-400">
-                <Link
-                    className="flex items-center gap-1 hover:text-white transition-all"
-                    href={'/blogs'}
-                >
-                    <IconArrowNarrowLeft className="md:size-5 size-4" />
-                    <span>back to blogs</span>
-                </Link>
+                <BackButton
+                    text="back to blogs"
+                    href="/blogs"
+                />
                 {blog &&
                     <h5 className="text-xs">
                         {formattedDate}

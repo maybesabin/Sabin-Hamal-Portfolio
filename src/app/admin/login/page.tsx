@@ -1,13 +1,18 @@
 "use client"
 
+import { useGlobalContext } from "@/app/contexts/global-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import axios, { AxiosError } from "axios"
+import axios from "axios"
 import { FormEvent, useState } from "react"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import { Eye, EyeClosed } from "lucide-react"
 
 const page = () => {
+    const router = useRouter()
+    const { setIsLoggedIn } = useGlobalContext()
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [formData, setFormData] = useState({
@@ -32,15 +37,9 @@ const page = () => {
 
         try {
             const res = await axios.post("http://localhost:3000/api/auth/login", formData)
-
-            // Handle successful response
-            if (res.data?.response?.data?.message) {
-                toast.success(res.data.response.data.message)
-            } else if (res.data?.message) {
-                toast.success(res.data.message)
-            } else {
-                toast.success("Login successful!")
-            }
+            toast.success("Login successful!")
+            setIsLoggedIn(true)
+            router.push("/admin")
         } catch (error) {
             console.error("Login error:", error)
 
@@ -76,7 +75,7 @@ const page = () => {
                     required
                 />
             </div>
-            <div className="w-full">
+            <div className="w-full relative">
                 <Label htmlFor="password" className="text-xs mb-2">Password</Label>
                 <Input
                     id="password"
@@ -89,6 +88,10 @@ const page = () => {
                     disabled={isLoading}
                     required
                 />
+                {showPassword ?
+                    <Eye onClick={() => setShowPassword(!showPassword)} className="size-4 absolute right-2 top-8.5" /> :
+                    <EyeClosed onClick={() => setShowPassword(!showPassword)} className="size-4 absolute right-2 top-8.5" />
+                }
             </div>
             <Button
                 type="submit"

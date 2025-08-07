@@ -10,10 +10,10 @@ const BlogSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Blog = mongoose.model("Blog", BlogSchema);
-
 if (mongoose.models.Blog) {
     delete mongoose.models.Blog
 }
+
+const Blog = mongoose.model("Blog", BlogSchema);
 
 export default Blog;

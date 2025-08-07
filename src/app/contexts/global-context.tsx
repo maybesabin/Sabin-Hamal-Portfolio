@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, SetStateAction, useContext, useState } from "react";
+import React, { createContext, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 
 interface GlobalPropsType {
     isLoggedIn: boolean;
@@ -9,6 +9,18 @@ const GlobalContext = createContext<GlobalPropsType | undefined>(undefined);
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+    useEffect(() => {
+        const storedLoginState = localStorage.getItem('isLoggedIn')
+        if (storedLoginState === 'true') {
+            setIsLoggedIn(true)
+        }
+    }, [])
+
+    useEffect(() => {
+        // Save login state to localStorage whenever it changes
+        localStorage.setItem('isLoggedIn', isLoggedIn.toString())
+    }, [isLoggedIn])
     return (
         <GlobalContext.Provider value={{
             isLoggedIn,

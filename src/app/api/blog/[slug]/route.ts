@@ -20,3 +20,33 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
         return handleError(error)
     }
 }
+
+export async function PUT(req: Request, { params }: { params: { slug: string } }) {
+    try {
+        await connectToDb()
+        const { slug } = await params;
+        const body = await req.json();
+
+        const { title, category, content } = body;
+
+        const updateData: any = {};
+        if (title !== undefined) updateData.title = title;
+        if (category !== undefined) updateData.category = category;
+        if (content !== undefined) updateData.content = content;
+
+        const updatedBlog = await Blog.findOneAndUpdate(
+            { slug },
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedBlog) return errorResponse("Blog not found");
+
+        return NextResponse.json({
+            message: "Blog updated successfully",
+            blog: updatedBlog
+        }, { status: 200 })
+    } catch (error) {
+        return handleError(error)
+    }
+}

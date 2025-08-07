@@ -3,8 +3,18 @@
 import { motion } from "framer-motion"
 import { fadeUp } from "@/utils/animation"
 import BackButton from "@/components/back-button"
+import { useGlobalContext } from "@/app/contexts/global-context"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
 
-const BlogHeader = () => {
+const AdminHeader = () => {
+    const router = useRouter()
+    const { setIsLoggedIn } = useGlobalContext()
+    const handleLogout = () => {
+        setIsLoggedIn(false)
+        router.push('/admin/login')
+    }
+
     return (
         <motion.div
             initial={fadeUp.initial}
@@ -17,24 +27,25 @@ const BlogHeader = () => {
                     text="back to portfolio"
                     href="/"
                 />
-                <h5 className="text-xs">
-                    {new Date().toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric"
-                    })}
-                </h5>
+                <Button
+                    onClick={handleLogout}
+                    size={'sm'}
+                    variant={"outline"}
+                    className="md:text-xs text-xs"
+                >
+                    logout
+                </Button>
             </div>
 
             <h2 className="mt-6 lg:text-4xl text-3xl">
-                blogs
+                admin
             </h2>
 
             <p className="text-neutral-400 text-xs lg:w-1/2 w-full">
-                thoughts on development, technology, and building things that matter. sharing insights from my journey as a full stack developer.
+                create & manage your blogs.
             </p>
         </motion.div>
     )
 }
 
-export default BlogHeader
+export default AdminHeader
