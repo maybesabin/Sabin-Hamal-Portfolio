@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 
 const Contact = () => {
     const socials = [
-        { title: "twitter/x", link: "https://x.com/16calc" },
+        { title: "twitter/x", link: "https://x.com/sabinhamal_" },
         { title: "github", link: "https://github.com/maybesabin" },
         { title: "linkedin", link: "https://www.linkedin.com/in/sabinhamal/" },
         { title: "instagram", link: "https://www.instagram.com/codeandlifts/" }

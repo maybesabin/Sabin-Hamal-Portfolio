@@ -2,43 +2,35 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { fadeIn } from "@/utils/animation";
+import { useQuery } from "@tanstack/react-query";
 
 const Wakatime = () => {
-    const [isClient, setIsClient] = useState(false)
-    useEffect(() => {
-        setIsClient(true)
+    const [isClient, setIsClient] = useState(false);
 
+    useEffect(() => {
+        setIsClient(true);
         // Dynamically import and register ldrs only on the client
         import("ldrs").then(({ infinity }) => {
-            infinity.register()
-        })
-    }, [])
+            infinity.register();
+        });
+    }, []);
 
-    const wakatimeUrl = 'https://wakatime.com/@sabinhamal_'
-    const [totalTime, setTotalTime] = useState<null | string>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
+    const wakatimeUrl = "https://wakatime.com/@sabinhamal_";
 
+    // React Query Fetch Function
     const fetchContributions = async () => {
-        setLoading(true)
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/wakatime`);
-            setTotalTime(response.data?.data[0]?.grand_total?.text)
-            setError(null);
-            setLoading(false);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError("Failed to fetch contributions.");
-                console.log(error.message)
-            }
-        } finally {
-            setLoading(false)
-        }
-    }
+        const response = await axios.get(`/api/wakatime`);
+        return response.data?.data?.[0]?.grand_total?.text || "";
+    };
 
-    useEffect(() => { fetchContributions() }, [])
+    const { data: totalTime, isLoading, isError } = useQuery({
+        queryKey: ["wakatimeData"],
+        queryFn: fetchContributions,
+        staleTime: 1000 * 60 * 5,
+        retry: 1 // retry once if it fails
+    });
 
     return (
         <motion.a
@@ -48,31 +40,29 @@ const Wakatime = () => {
             transition={{ ...fadeIn.transition, delay: 1 }}
             target="_blank"
             href={wakatimeUrl}
-            className="text-xs text-neutral-500 hover:text-neutral-400 cursor-pointer mt-2 transition-all">
-
-            {
-                loading ? (
-                    isClient && (
-                        //@ts-expect-error: Custom element 'l-infinity' is not recognized by TypeScript
-                        <l-infinity
-                            size="25"
-                            stroke="2"
-                            stroke-length="0.15"
-                            bg-opacity="0.1"
-                            speed="1.3"
-                            color="white"
-                        />
-                    )
-                ) : error ? (
-                    'failed to fetch data'
-                ) : (totalTime == null || totalTime === '0 secs') ? (
-                    `i didn't code today`
-                ) : (
-                    `i coded ${totalTime} today`
+            className="text-xs text-neutral-500 hover:text-neutral-400 cursor-pointer mt-2 transition-all"
+        >
+            {isLoading ? (
+                isClient && (
+                    // @ts-expect-error: Custom element 'l-infinity' is not recognized by TypeScript
+                    <l-infinity
+                        size="25"
+                        stroke="2"
+                        stroke-length="0.15"
+                        bg-opacity="0.1"
+                        speed="1.3"
+                        color="white"
+                    />
                 )
-            }
+            ) : isError ? (
+                "failed to fetch data"
+            ) : !totalTime || totalTime === "0 secs" ? (
+                "i didn't code today"
+            ) : (
+                `i coded ${totalTime} today`
+            )}
         </motion.a>
-    )
-}
+    );
+};
 
-export default Wakatime
+export default Wakatime;

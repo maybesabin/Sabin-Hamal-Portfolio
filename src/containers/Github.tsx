@@ -2,45 +2,41 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { fadeIn } from "@/utils/animation";
+import { useQuery } from "@tanstack/react-query";
 
 const Github = () => {
+    const [isClient, setIsClient] = useState(false);
 
-    const [isClient, setIsClient] = useState(false)
     useEffect(() => {
-        setIsClient(true)
-
+        setIsClient(true);
         // Dynamically import and register ldrs only on the client
         import("ldrs").then(({ infinity }) => {
-            infinity.register()
-        })
-    }, [])
+            infinity.register();
+        });
+    }, []);
 
     const username = "maybesabin";
-    const url = `https://github.com/${username}`
-    const [contributions, setContributions] = useState<null | number>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false)
+    const url = `https://github.com/${username}`;
 
-    const fetchContributions = async () => {
-        setLoading(true)
-        try {
-            const response = await axios.get(`https://github-contributions-api.jogruber.de/v4/${username}`);
-            setContributions(response.data.total["2025"])
-            setError(null);
-            setLoading(false)
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError("Failed to fetch contributions.");
-                console.log(error.message)
-            }
-        } finally {
-            setLoading(false)
-        }
-    }
+    const fetchContributions = async (): Promise<number> => {
+        const response = await axios.get(
+            `https://github-contributions-api.jogruber.de/v4/${username}`
+        );
+        return response.data?.total?.["2025"] || 0;
+    };
 
-    useEffect(() => { fetchContributions() }, [])
+    const {
+        data: contributions,
+        isLoading,
+        isError
+    } = useQuery({
+        queryKey: ["githubContributions", username],
+        queryFn: fetchContributions,
+        staleTime: 1000 * 60 * 5,
+        retry: 1 // retry once on failure
+    });
 
     return (
         <motion.a
@@ -50,11 +46,11 @@ const Github = () => {
             transition={{ ...fadeIn.transition, delay: 1 }}
             target="_blank"
             href={url}
-            className="text-xs text-neutral-500 hover:text-neutral-400 cursor-pointer mt-2 transition-all">
-            {
-                (loading || contributions == null) ?
-                    isClient &&
-                    //@ts-expect-error: Custom element 'l-infinity' is not recognized by TypeScript
+            className="text-xs text-neutral-500 hover:text-neutral-400 cursor-pointer mt-2 transition-all"
+        >
+            {isLoading || contributions == null ? (
+                isClient && (
+                    // @ts-expect-error: Custom element 'l-infinity' is not recognized by TypeScript
                     <l-infinity
                         size="25"
                         stroke="2"
@@ -63,12 +59,14 @@ const Github = () => {
                         speed="1.3"
                         color="white"
                     />
-                    :
-                    `${contributions} contributions this year`
-            }
-            {(!loading && error) && 'failed to fetch data'}
+                )
+            ) : isError ? (
+                "failed to fetch data"
+            ) : (
+                `${contributions} contributions this year`
+            )}
         </motion.a>
-    )
-}
+    );
+};
 
-export default Github
+export default Github;
