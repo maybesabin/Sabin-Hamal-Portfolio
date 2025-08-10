@@ -14,6 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sabinhamal.com.np"),
   title: "Sabin Hamal | Fullstack Developer",
   description:
     "Portfolio of Sabin Hamal, a passionate fullstack developer specializing in Frontend Development. Explore my projects, skills, and contact details.",

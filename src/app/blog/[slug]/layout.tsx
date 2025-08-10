@@ -5,7 +5,6 @@ import pfp from "../../../assets/pfp.jpg"
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     try {
         const { slug } = await params
-        console.log(slug)
         const res = await axios.get(`http://localhost:3000/api/blog/${slug}`)
         const blog = res.data.blog
 
