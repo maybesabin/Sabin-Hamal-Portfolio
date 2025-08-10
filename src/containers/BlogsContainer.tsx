@@ -90,7 +90,7 @@ const BlogsContainer = () => {
             )}
 
             {!isLoading && !isError && blogs?.length === 0 && (
-                <p className="text-neutral-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm">:/ no blogs found</p>
+                <p className="text-neutral-400 text-sm">:/ no blogs found</p>
             )}
 
             {blogs?.map((blog, idx) => {

@@ -105,7 +105,7 @@ const Blog = () => {
             )}
 
             {!isLoading && !blog && (
-                <p className="text-neutral-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm">:/ blog not found</p>
+                <p className="text-neutral-400 text-sm">:/ blog not found</p>
             )}
         </>
     )
