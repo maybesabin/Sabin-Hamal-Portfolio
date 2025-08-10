@@ -8,6 +8,7 @@ import Link from "next/link"
 import ReactMarkdown from "react-markdown"
 import { motion } from "framer-motion"
 import { fadeIn, fadeUp } from "@/utils/animation"
+import rehypeRaw from "rehype-raw";
 
 const BlogsContainer = () => {
 
@@ -29,6 +30,34 @@ const BlogsContainer = () => {
         staleTime: 1000 * 60 * 5,
         retry: 1,
     })
+
+    // Strip HTML tags from string
+    const stripHtml = (html: string) => {
+        return html.replace(/<[^>]*>/g, "");
+    };
+
+    const getPreview = (text: string) => {
+        const cleanText = stripHtml(text);
+
+        const fullstopIndex = cleanText.indexOf(".");
+        const lineBreakIndex = cleanText.indexOf("\n");
+
+        const indices = [fullstopIndex, lineBreakIndex].filter(i => i !== -1);
+        const cutIndex = indices.length > 0 ? Math.min(...indices) : -1;
+
+        if (cutIndex === -1) {
+            return cleanText;
+        }
+
+        // Include punctuation and possible trailing space
+        let endIndex = cutIndex + 1;
+        if (cleanText[endIndex] === " ") {
+            endIndex += 1;
+        }
+
+        return cleanText.slice(0, endIndex)
+            ;
+    };
 
     return (
         <motion.div
@@ -72,6 +101,7 @@ const BlogsContainer = () => {
                     month: "short",
                     day: "numeric",
                 });
+                const previewText = getPreview(blog.content);
 
                 return (
                     <Link
@@ -105,7 +135,9 @@ const BlogsContainer = () => {
                                 {blog.title}
                             </h2>
                             <div className="text-neutral-400 md:text-sm text-xs">
-                                <ReactMarkdown>{blog.content.split(".")[0] + "."}</ReactMarkdown>
+                                <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                                    {previewText}
+                                </ReactMarkdown>
                             </div>
                         </motion.div>
                     </Link>

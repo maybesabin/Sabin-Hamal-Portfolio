@@ -6,6 +6,7 @@ import axios from "axios";
 import { Calendar, Clock } from "lucide-react";
 import { useParams } from "next/navigation";
 import ReactMarkdown from "react-markdown"
+import rehypeRaw from "rehype-raw";
 
 const Blog = () => {
     const params = useParams();
@@ -80,7 +81,7 @@ const Blog = () => {
                         {blog.title}
                     </h1>
                     <div className="text-neutral-400 md:text-sm text-xs">
-                        <ReactMarkdown>{blog.content}</ReactMarkdown>
+                        <ReactMarkdown rehypePlugins={[rehypeRaw]}>{blog.content}</ReactMarkdown>
                     </div>
                 </>
             }

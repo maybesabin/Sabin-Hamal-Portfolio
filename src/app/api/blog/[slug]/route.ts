@@ -2,7 +2,7 @@ import connectToDb from "@/lib/db";
 import Blog from "@/models/blog";
 import { BlogType } from "@/types/blog";
 import { handleError } from "@/utils/handleError";
-import { errorResponse } from "@/utils/response";
+import { errorResponse, successResponse } from "@/utils/response";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
@@ -49,5 +49,21 @@ export async function PUT(req: Request, { params }: { params: Promise<{ slug: st
         }, { status: 200 });
     } catch (error) {
         return handleError(error);
+    }
+}
+
+export async function DELETE(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+    try {
+        await connectToDb()
+
+        const { slug } = await params;
+        const blog = await Blog.findOne({ slug })
+
+        if (!blog) return errorResponse("Blog doesn't exist")
+
+        await Blog.findOneAndDelete({ slug })
+        return successResponse("Blog deleted successfully")
+    } catch (error) {
+        return handleError(error)
     }
 }

@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
+import { Edit, Trash } from "lucide-react"
 
 // Skeleton components
 const BlogsTableSkeleton = () => (
@@ -114,6 +115,11 @@ const AdminPanel = () => {
         return res.data
     }
 
+    const deleteBlog = async (slug: string) => {
+        const res = await axios.delete(`/api/blog/${slug}`)
+        return res.data
+    }
+
     const createBlog = async (data: { title: string; category: string; content: string }) => {
         const res = await axios.post("/api/blogs", data, {
             headers: {
@@ -187,6 +193,17 @@ const AdminPanel = () => {
         }
     }
 
+    const handleDeleteBlog = async (slug: string) => {
+        try {
+            await deleteBlog(slug)
+            await fetchBlogs()
+            toast.success("Blog deleted successfully!")
+        } catch (error) {
+            console.log('Error deleting blog: ', error)
+            toast.error("Failed to delete blog. Please try again.")
+        }
+    }
+
     const handleCreateSubmit = async () => {
         if (!createFormData.title || !createFormData.category || !createFormData.content) {
             toast.error("Please fill in all fields")
@@ -227,7 +244,8 @@ const AdminPanel = () => {
                         <TableRow>
                             <TableHead>Title</TableHead>
                             <TableHead>Category</TableHead>
-                            <TableHead className="text-right">Created At</TableHead>
+                            <TableHead>Created At</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody className="text-neutral-500">
@@ -242,16 +260,30 @@ const AdminPanel = () => {
                             return (
                                 <TableRow key={idx}>
                                     <TableCell
-                                        className="border-b-black hover:underline cursor-pointer"
-                                        onClick={() => handleEditClick(blog)}
-                                    >
+                                        className="border-b-black hover:underline cursor-pointer">
                                         {blog.title}
                                     </TableCell>
                                     <TableCell className="border-b-black">
                                         {blog.category}
                                     </TableCell>
-                                    <TableCell className="border-b-black text-right">
+                                    <TableCell className="border-b-black">
                                         {formattedDate}
+                                    </TableCell>
+                                    <TableCell className="flex items-center justify-end gap-2 border-b-black">
+                                        <Button
+                                            variant={"outline"}
+                                            size={"sm"}
+                                            onClick={() => handleEditClick(blog)}
+                                        >
+                                            <Edit className="size-3.5" />
+                                        </Button>
+                                        <Button
+                                            variant={"outline"}
+                                            size={"sm"}
+                                            onClick={() => handleDeleteBlog(blog.slug)}
+                                        >
+                                            <Trash className="size-3.5" />
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             )
