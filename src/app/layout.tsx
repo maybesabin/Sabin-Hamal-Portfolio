@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Sabin Hamal", url: "https://sabinhamal.com.np" }],
   openGraph: {
-    title: "Sabin Hamal | Frontend Developer & UI/UX Designer",
+    title: "Sabin Hamal | Fullstack Developer",
     description:
       "Explore my portfolio showcasing modern web applications, landing pages, and e-commerce sites.",
     url: "https://sabinhamal.com.np",
