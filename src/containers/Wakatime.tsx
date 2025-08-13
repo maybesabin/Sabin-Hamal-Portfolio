@@ -22,7 +22,8 @@ const Wakatime = () => {
     // React Query Fetch Function
     const fetchContributions = async () => {
         const response = await axios.get(`/api/wakatime`);
-        return response.data?.data?.[0]?.grand_total?.text || "";
+        const timeText = response.data?.data?.data?.[0]?.grand_total?.text || "";
+        return timeText;
     };
 
     const { data: totalTime, isLoading, isError } = useQuery({
