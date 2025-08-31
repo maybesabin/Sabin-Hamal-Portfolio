@@ -15,7 +15,7 @@ const Contact = () => {
         <motion.div
             initial={fadeUp.initial}
             animate={fadeUp.animate}
-            transition={{ ...fadeUp.transition, delay: 0.8 }}
+            transition={{ ...fadeUp.transition, delay: 0.9 }}
             className="w-full"
         >
             <h2 className="text-sm mt-4">contact</h2>
@@ -26,7 +26,7 @@ const Contact = () => {
                         initial={fadeIn.initial}
                         animate={fadeIn.animate}
                         viewport={fadeIn.viewport}
-                        transition={{ ...fadeIn.transition, delay: 0.8 + 0.2 * idx }}
+                        transition={{ ...fadeIn.transition, delay: 0.9 + 0.2 * idx }}
                         target="_blank"
                         href={item.link}
                         className="text-xs rounded-full bg-neutral-800 hover:bg-neutral-700 transition-all px-3 py-1"

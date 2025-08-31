@@ -5,6 +5,7 @@ import Projects from "../containers/Projects"
 import Contact from "../containers/Contact"
 import Github from "../containers/Github"
 import Wakatime from "../containers/Wakatime"
+import Experience from "@/containers/Experience"
 
 const page = () => {
   return (
@@ -13,6 +14,7 @@ const page = () => {
         <Header />
         <About />
         <Skills />
+        <Experience />
         <Projects />
         <Contact />
         <div className="w-full flex items-center justify-between">
