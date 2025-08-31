@@ -29,7 +29,7 @@ const Experience = () => {
                 <div className="flex items-center gap-2 mt-1 text-neutral-400">
                     <Building2 className="md:size-4.5 size-3" />
                     <span className="text-xs">
-                        <a href="#" className="hover:text-white transition-all">E-pravidi</a>
+                        <a href="https://www.linkedin.com/company/e-pravidi/posts/?feedView=all" target="_blank" className="hover:text-white transition-all">E-pravidi</a>
                         &nbsp;Kathmandu
                     </span>
                 </div>
