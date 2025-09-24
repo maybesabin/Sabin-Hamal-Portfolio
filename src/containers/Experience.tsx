@@ -23,7 +23,7 @@ const Experience = () => {
                     </h3>
                     <div className="flex items-center gap-2 text-xs text-neutral-400">
                         <Calendar className="md:size-3.5 size-2" />
-                        <span>November 2024 - Present</span>
+                        <span>Nov<span className="md:inline-flex hidden">ember</span> 2024 - Present</span>
                     </div>
                 </div>
                 <div className="flex items-center gap-2 mt-1 text-neutral-400">
