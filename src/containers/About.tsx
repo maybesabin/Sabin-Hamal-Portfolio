@@ -20,7 +20,7 @@ const About = () => {
                 </span>
                 <br className="lg:flex hidden" />I&apos;m available for internships, full time opportunities and freelance projects. Check out my
                 <Link href={'/blogs'} className="text-white inline-block">
-                    &nbsp;blogs&nbsp;.
+                    &nbsp;<span className="underline">blogs</span>&nbsp;.
                 </Link>
             </p>
 
